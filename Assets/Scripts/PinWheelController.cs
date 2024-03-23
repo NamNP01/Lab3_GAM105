@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PinWheelController : MonoBehaviour
 {
+    public float rotationSpeed = 100f;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,14 +14,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-       
-        if (collision.gameObject.name.Equals("Square"))
-        {
-            Destroy(gameObject);
-        }
+        Quaternion deltaRotation = Quaternion.Euler(0, 0, rotationSpeed * Time.deltaTime);
+        transform.rotation = transform.rotation * deltaRotation;
     }
 }

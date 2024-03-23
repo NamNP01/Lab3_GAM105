@@ -8,6 +8,8 @@ public class SquareController : MonoBehaviour
 {
     public float timeRemaining=60;
     public Text cowndownText;
+    public Text ScoreText;
+    public float Score;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,7 @@ public class SquareController : MonoBehaviour
         cowndownText.text = "Time's up!";
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -37,17 +40,33 @@ public class SquareController : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
+    public void LoadThisScene()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Circle"))
         {
-            Vector2 fistPosition = new Vector2((float)-6.22, (float)1.4);
-            transform.position = fistPosition;
+            LoadThisScene();
         }
         if (collision.gameObject.name.Equals("Box"))
         {
             Debug.Log("Win");
             LoadNextScene();
+        }
+        if(collision.gameObject.tag.Equals("PinWheel"))
+        {
+            //Vector2 fistPosition = new Vector2((float)-5.48, (float)0.9899999);
+           // transform.position = fistPosition;
+            LoadThisScene();
+        }
+        if (collision.gameObject.tag.Equals("YellowCircle"))
+        {
+            Destroy(collision.gameObject);
+            Score++;
+            ScoreText.text = "Score: " + Score.ToString();
         }
     }
 }
