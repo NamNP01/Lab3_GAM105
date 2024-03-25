@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,11 +9,21 @@ public class SquareController : MonoBehaviour
     public float timeRemaining=60;
     public Text cowndownText;
     public Text ScoreText;
+    public Text HPText;
     public float Score;
+    public float A;
+    public float B;
+    public float HP;
+    public float Mission;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(Countdown());
+        Vector2 fistPosition = new Vector2(A,B);
+        transform.position = fistPosition;
+        HPText.text = "HP: " + HP.ToString();
     }
     IEnumerator Countdown()
     {
@@ -22,8 +32,13 @@ public class SquareController : MonoBehaviour
             yield return new WaitForSeconds(1);
             timeRemaining--;
             cowndownText.text = "Time: " + timeRemaining. ToString();
+            if(timeRemaining==0)
+            {
+                LoadThisScene();
+            }
         }
         cowndownText.text = "Time's up!";
+        
     }
 
 
@@ -34,6 +49,17 @@ public class SquareController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontal, vertical, 0f).normalized;
         transform.Translate(movement * 5f * Time.deltaTime);
+        
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag.Equals("CheckPoint"))
+        {
+            A = collision.gameObject.transform.position.x;
+            B = collision.gameObject.transform.position.y;
+        }
     }
     public void LoadNextScene()
     {
@@ -49,18 +75,40 @@ public class SquareController : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Circle"))
         {
-            LoadThisScene();
+            if (HP > 0)
+            {
+                Vector2 fistPosition = new Vector2(A, B);
+                transform.position = fistPosition;
+                HP--;
+                HPText.text = "HP: " + HP.ToString();
+            }
+            else
+            {
+                LoadThisScene();
+            }
         }
         if (collision.gameObject.name.Equals("Box"))
         {
-            Debug.Log("Win");
-            LoadNextScene();
+            if (Mission == Score)
+            {
+                LoadNextScene();
+            }
+            
         }
         if(collision.gameObject.tag.Equals("PinWheel"))
         {
-            //Vector2 fistPosition = new Vector2((float)-5.48, (float)0.9899999);
-           // transform.position = fistPosition;
-            LoadThisScene();
+            if(HP>0)
+            {
+                Vector2 fistPosition = new Vector2(A, B);
+                transform.position = fistPosition;
+                HP--;
+                HPText.text = "HP: " + HP.ToString();
+            }
+            else
+            {
+                LoadThisScene();
+            }
+
         }
         if (collision.gameObject.tag.Equals("YellowCircle"))
         {

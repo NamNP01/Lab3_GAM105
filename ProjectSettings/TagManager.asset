@@ -10,6 +10,13 @@ TagManager:
   - Win
   - YellowCircle
   - PinWheel
+  - Bullet
+  - CheckPoint
+  - Menu
+  - BackGround
+  - RedCircle
+  - FirePoint
+  - Resume
   layers:
   - Default
   - TransparentFX
